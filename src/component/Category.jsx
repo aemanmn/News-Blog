@@ -1,0 +1,39 @@
+import React from 'react'
+import Wrapper from './Wrapper'
+import { useNewsContext } from '../context/NewsContext';
+
+const Category = ({className}) => {
+
+  const {setNews, fetchNews} = useNewsContext();
+
+
+    //maping all the buttons from array
+
+
+    const categories = ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology'];
+
+    const handleClick = async (e) =>{
+      const cat = e.target.value;
+       const data = await fetchNews((`/everything?q=${cat}`));
+      setNews(data.articles);
+    }
+  return (
+
+    <div className={`${className}`}>
+    <Wrapper>
+        <div className='m-auto max-w-full w-fit flex overflow-x-auto px-4 scrollbar-none gap-5'>
+   {categories.map((category)=>{
+       return(
+       <button onClick={handleClick} 
+       key={category}
+        value={category}
+         className="btn btn-primary">{category}</button>
+       )
+   })}
+    </div>
+    </Wrapper>
+    </div>
+  )
+}
+
+export default Category
